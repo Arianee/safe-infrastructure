@@ -32,30 +32,30 @@ services:
       - cgw-web
       - events-web
 
-  txs-db:
-    image: postgres:14-alpine
-    command: -c 'max_connections=250'
-    environment:
-      POSTGRES_PASSWORD: postgres
-    volumes:
-      - ./data/txs-db:/var/lib/postgresql/data
-    <<: *pghealthcheck
+  # txs-db:
+  #   image: postgres:14-alpine
+  #   command: -c 'max_connections=250'
+  #   environment:
+  #     POSTGRES_PASSWORD: postgres
+  #   volumes:
+  #     - ./data/txs-db:/var/lib/postgresql/data
+  #   <<: *pghealthcheck
 
-  cfg-db:
-    image: postgres:14-alpine
-    environment:
-      POSTGRES_PASSWORD: postgres
-    volumes:
-      - ./data/cfg-db:/var/lib/postgresql/data
-    <<: *pghealthcheck
+  # cfg-db:
+  #   image: postgres:14-alpine
+  #   environment:
+  #     POSTGRES_PASSWORD: postgres
+  #   volumes:
+  #     - ./data/cfg-db:/var/lib/postgresql/data
+  #   <<: *pghealthcheck
 
-  events-db:
-    image: postgres:14-alpine
-    environment:
-      POSTGRES_PASSWORD: postgres
-    volumes:
-      - ./data/events-db:/var/lib/postgresql/data
-    <<: *pghealthcheck
+  # events-db:
+  #   image: postgres:14-alpine
+  #   environment:
+  #     POSTGRES_PASSWORD: postgres
+  #   volumes:
+  #     - ./data/events-db:/var/lib/postgresql/data
+  #   <<: *pghealthcheck
 
   # Safe Transaction Service
   txs-redis:
@@ -72,8 +72,8 @@ services:
     environment:
       - ETHEREUM_NODE_URL=${RPC_NODE_URL}
     depends_on:
-      txs-db:
-        condition: service_healthy
+      # txs-db:
+      #   condition: service_healthy
       txs-redis:
         condition: service_healthy
     working_dir: /app
@@ -90,8 +90,8 @@ services:
       - RUN_MIGRATIONS=1
       - WORKER_QUEUES=default,indexing
     depends_on:
-      txs-db:
-        condition: service_healthy
+      # txs-db:
+      #   condition: service_healthy
       txs-redis:
         condition: service_healthy
     command: docker/web/celery/worker/run.sh
@@ -102,8 +102,8 @@ services:
       - WORKER_QUEUES=contracts,tokens
       - ETHEREUM_NODE_URL=${RPC_NODE_URL}
     depends_on:
-      txs-db:
-        condition: service_healthy
+      # txs-db:
+      #   condition: service_healthy
       txs-redis:
         condition: service_healthy
 
@@ -113,16 +113,16 @@ services:
       - WORKER_QUEUES=notifications,webhooks
       - ETHEREUM_NODE_URL=${RPC_NODE_URL}
     depends_on:
-      txs-db:
-        condition: service_healthy
+      # txs-db:
+      #   condition: service_healthy
       txs-redis:
         condition: service_healthy
 
   txs-scheduler:
     <<: *txs-worker
     depends_on:
-      txs-db:
-        condition: service_healthy
+      # txs-db:
+      #   condition: service_healthy
       txs-redis:
         condition: service_healthy
     command: docker/web/celery/scheduler/run.sh
@@ -135,9 +135,9 @@ services:
       - nginx-shared-cfg:/nginx
     env_file:
       - container_env_files/cfg.env
-    depends_on:
-      cfg-db:
-        condition: service_healthy
+    # depends_on:
+    #   cfg-db:
+    #     condition: service_healthy
 
   # Safe Client Gateway
   cgw-redis:
@@ -175,7 +175,7 @@ services:
     env_file:
       - container_env_files/events.env
     depends_on:
-      events-db:
-        condition: service_healthy
+      # events-db:
+      #   condition: service_healthy
       general-rabbitmq:
         condition: service_healthy
