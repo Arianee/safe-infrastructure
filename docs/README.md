@@ -10,6 +10,17 @@
 
 ## Setup
 
+1. Create a VM in GCP (inside our instance group in `arianee-nodes` project)
+2. Find the SSH key in dashlane to pull this repo and paste it in [the script](../launchServices.sh#L36)
+3. Connect to the VM using this command 
+	```bash
+	gcloud compute ssh --zone "<VM_REGION>" "<VM_NAME>"  --project "<GCP_PROJECT_NAME" -- -L 8000:localhost:8000
+	```
+	and copy/paste [the script](../launchServices.sh) in the terminal, wait a few minutes
+4. Services should be up and running inside the VM, if you are connected to the VM using the previous command, you can check that everything is fine by browsing to http://localhost:8000/cfg/admin
+
+### More information
+
 This repository contains the minimum viable local setup for our backend services.
 The setup presented here, assumes that only L2 safes will be used. Last stable version will be used for every service, but you can adjust them on `.env`, e.g.:
 
