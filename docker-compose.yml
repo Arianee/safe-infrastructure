@@ -148,6 +148,8 @@ services:
     image: safeglobal/safe-client-gateway-nest:${CGW_VERSION}
     env_file:
       - container_env_files/cgw.env
+    volumes:
+      - ./configuration.js:/dist/src/config/entities/configuration.js
     depends_on:
       cgw-redis:
         condition: service_healthy

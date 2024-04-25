@@ -11,4 +11,6 @@ docker compose up -d \
   && echo "==> $(date +%H:%M:%S) ==> Creating super-user for Safe Transaction Service... (may take a while)" \
   && docker compose exec txs-web python manage.py createsuperuser || exit
 
+# docker compose restart cgw-web
+
 echo "==> $(date +%H:%M:%S) ==> All set! You may want to add a ChainInfo into the Config service. Please use the link below to fill its data: http://localhost:8000/cfg/admin/chains/chain/add/"
